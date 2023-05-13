@@ -1,4 +1,5 @@
 import { useRouter, useSegments } from "expo-router";
+import axios from 'axios'
 import React from "react";
 import { compare } from "react-native-bcrypt"
 import * as SecureStore from 'expo-secure-store';
@@ -34,17 +35,25 @@ function useProtectedRoute(user) {
 }
 
 export const signUp = async (email, password, profilePhoto, apiKey, adminKey) => {
-  const response = await fetch('https://user-api-sigma.vercel.app/api/signup', {
-    method: 'POST',
-    body: JSON.stringify({ email, password, profilePhoto, apiKey, adminKey }),
-    headers: {
-      'Content-Type': 'application/json'
+  try {
+    const response = await axios.post('https://user-api-sigma.vercel.app/api/signup',
+      {
+        email, password, profilePhoto, apiKey, adminKey,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    if (response.status === 200) {
+      router.replace('/sign-in');
     }
-  });
-  if(response.ok){
-    router.replace('/sign-in')
+  } catch (error) {
+    console.error(error);
   }
-}
+};
+
 
 export function Provider(props) {
   const [user, setAuth] = React.useState(null);
@@ -57,43 +66,50 @@ export function Provider(props) {
   useProtectedRoute(user);
 
   const signIn = async (email, password) => {
-    const response = await fetch('https://user-api-sigma.vercel.app/api/signin', {
-      method: 'POST',
-      body: JSON.stringify({ email, password }),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-
-    if (response.ok) {
-      const { user } = await response.json();
-      console.log("Login API response received. Authenticating user credentials ")
-      const validEmail = user.email
-      const validPassword = user.password
-      const apiKey = user.apiKey
-      const adminKey = user.adminKey
-    // Authenticate user with email and password.
-    const passwordMatch = new Promise((resolve, reject) => {
-      compare(password, validPassword, (error, result) => {
-        if (error) {
-          reject(error);
-        } else {
-          resolve(result);
+    try {
+      const response = await axios.post('https://user-api-sigma.vercel.app/api/signin', {
+        email,
+        password
+      }, {
+        headers: {
+          'Content-Type': 'application/json'
         }
       });
-    });
   
-    if (email === validEmail && (await passwordMatch)) {
-      console.log("Success! User logged in")
-      save("apiKey", apiKey)
-      save("adminKey", adminKey)
-      setAuth(user); // Set user info
-      return true;
-    } else {
-      return false;
+      if (response.status === 200) {
+        const { user } = await response.data;
+        console.log("Login API response received. Authenticating user credentials ")
+        const validEmail = user.email
+        const validPassword = user.password
+        const apiKey = user.apiKey
+        const adminKey = user.adminKey
+  
+        // Authenticate user with email and password.
+        const passwordMatch = new Promise((resolve, reject) => {
+          compare(password, validPassword, (error, result) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(result);
+            }
+          });
+        });
+  
+        if (email === validEmail && (await passwordMatch)) {
+          console.log("Success! User logged in")
+          save("apiKey", apiKey)
+          save("adminKey", adminKey)
+          setAuth(user); // Set user info
+          return true;
+        } else {
+          return false;
+        }
+      }
+    } catch (error) {
+      console.error(error);
     }
   };
-}
+  
 
   return (
     <AuthContext.Provider

@@ -2,13 +2,27 @@ import { Text, View, TouchableOpacity, StyleSheet, SafeAreaView } from "react-na
 import { Stack, useRouter } from "expo-router";
 import { useAuth } from "../context/auth";
 import { Ionicons } from '@expo/vector-icons';
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { getBitcoinPrice } from "../hooks/getBitcoinPrice"
+import { useState, useEffect } from "react"
 
 export default function Home() {
   const { signOut } = useAuth();
   const router = useRouter()
 
+  const [ btcPrice, setBtcPrice ] = useState('100')
+
+  useEffect(() => {
+    const useGetBitcoinPrice = async () => {
+      const price = await getBitcoinPrice()
+      console.log(price)
+      setBtcPrice(price)
+    }
+    useGetBitcoinPrice()
+  }, [])
+
   return (
+    <>
     <SafeAreaView style={styles.container}>
       <View>
         <View style={styles.buttonContainer}>
@@ -24,6 +38,18 @@ export default function Home() {
         </View>
         <View style={styles.buttonContainer}>
               <TouchableOpacity style={styles.button}
+              onPress={() => {
+                router.push("/mempool");
+                }}
+              >
+                <Text style={styles.text}>
+                  Mempool
+                </Text>
+                <MaterialCommunityIcons name="bitcoin" size={20} color="black" />
+              </TouchableOpacity>
+        </View>
+        <View style={styles.buttonContainer}>
+              <TouchableOpacity style={styles.button}
               onPress={() => signOut()}>
                 <Text style={styles.text}>
                   Sign Out
@@ -33,6 +59,7 @@ export default function Home() {
         </View>
       </View>
     </SafeAreaView>
+    </>
   )
 }
 const styles = StyleSheet.create({

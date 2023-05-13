@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { Text, View, TouchableOpacity, SafeAreaView, RefreshControl, ScrollView} from 'react-native'
-import { useRouter, Stack, Screen } from "expo-router"
+import { useRouter, Stack } from "expo-router"
 import { Image } from 'expo-image'
 import { styles } from '../components/styles'
 import { Feather } from '@expo/vector-icons'
@@ -34,8 +34,8 @@ export default function Wallet() {
     useGetBalance()
   }, [])
   
-
   return (
+    <>
     <SafeAreaView style={styles.container}>
             <Stack.Screen
         options={{
@@ -94,5 +94,6 @@ export default function Wallet() {
         <History />
       </ScrollView>
     </SafeAreaView>
+    </>
   );
 }
