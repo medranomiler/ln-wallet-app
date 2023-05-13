@@ -3,23 +3,11 @@ import { Stack, useRouter } from "expo-router";
 import { useAuth } from "../context/auth";
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { getBitcoinPrice } from "../hooks/getBitcoinPrice"
-import { useState, useEffect } from "react"
+
 
 export default function Home() {
   const { signOut } = useAuth();
   const router = useRouter()
-
-  const [ btcPrice, setBtcPrice ] = useState('100')
-
-  useEffect(() => {
-    const useGetBitcoinPrice = async () => {
-      const price = await getBitcoinPrice()
-      console.log(price)
-      setBtcPrice(price)
-    }
-    useGetBitcoinPrice()
-  }, [])
 
   return (
     <>

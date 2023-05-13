@@ -5,6 +5,9 @@ import { StatusBar } from "expo-status-bar";
 import { Feather } from '@expo/vector-icons';
 import { styles } from '../components/styles';
 import { payInvoice } from "../hooks/payInvoice"
+import { decodeInvoice } from "../hooks/readInvoice"
+import { Foundation } from '@expo/vector-icons';
+import axios from 'axios';
 
 export default function Modal() {
     const [invoice, setInvoice] = useState('');
@@ -25,6 +28,12 @@ export default function Modal() {
     }, 2000)  
     };
 
+    const readInvoice = async () => {
+      console.log(invoice)
+      const decodedInvoice = await decodeInvoice(invoice)
+      setMessage(`${decodedInvoice.num_satoshis} Sats for ${decodedInvoice.description}`)
+    }
+
     return (
       <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -42,7 +51,14 @@ export default function Modal() {
                     value={invoice} />
                     <View style={styles.container2}>
                         {loading? (
-                        <View>
+                        <View style={{flex: 1, flexDirection: "row", justifyContent: "center"}}>
+                        <TouchableOpacity
+                          style={styles.sendButton}
+                          onPress={readInvoice}
+                        >
+                            <Text style={styles.sendButtonText}>Read</Text>
+                            <Foundation name="magnifying-glass" size={24} color="black" />
+                        </TouchableOpacity>
                         <TouchableOpacity
                           style={styles.sendButton}
                           
@@ -50,7 +66,14 @@ export default function Modal() {
                             <Text style={styles.sendButtonText}>Sending</Text>
                             <ActivityIndicator size="small" color="black"/>
                         </TouchableOpacity>
-                        </View>):(<View>
+                        </View>):(<View style={{flex: 1, flexDirection: "row", justifyContent: "center"}}>
+                        <TouchableOpacity
+                          style={styles.sendButton}
+                          onPress={readInvoice}
+                        >
+                            <Text style={styles.sendButtonText}>Read</Text>
+                            <Foundation name="magnifying-glass" size={24} color="black" />
+                        </TouchableOpacity>
                         <TouchableOpacity
                           style={styles.sendButton}
                           onPress={onPressPayInvoice}
@@ -58,6 +81,7 @@ export default function Modal() {
                             <Text style={styles.sendButtonText}>Send</Text>
                             <Feather name="send" size={24} color="black" />
                         </TouchableOpacity>
+                        
                           </View>)}
                     </View>
                   <Text style={styles.balance}>
