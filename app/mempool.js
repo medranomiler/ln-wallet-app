@@ -1,8 +1,7 @@
-import { View, Text, StyleSheet, ScrollView, SafeAreaView } from 'react-native'
-import React, { useState, useEffect, useCallback } from 'react'
+import { View, Text, StyleSheet, ScrollView } from 'react-native'
+import React, { useState, useEffect } from 'react'
 import { getBitcoinPrice } from "../hooks/getBitcoinPrice"
 import { getBlocks } from "../hooks/getBlocks"
-import { Stack } from "expo-router"
 
 export default function Mempool() {
 
@@ -25,53 +24,67 @@ export default function Mempool() {
       }
       useGetBlocks()
     }, [])
+
+    function formatTimestamp(timestamp) {
+      const secondsAgo = Math.floor((new Date() - timestamp * 1000) / 1000);
+      if (secondsAgo < 60) {
+        return `${secondsAgo} second${secondsAgo !== 1 ? 's' : ''} ago`;
+      }
+      const minutesAgo = Math.floor(secondsAgo / 60);
+      if (minutesAgo < 60) {
+        return `${minutesAgo} minute${minutesAgo !== 1 ? 's' : ''} ago`;
+      }
+      const hoursAgo = Math.floor(minutesAgo / 60);
+      if (hoursAgo < 24) {
+        return `${hoursAgo} hour${hoursAgo !== 1 ? 's' : ''} ago`;
+      }
+      const daysAgo = Math.floor(hoursAgo / 24);
+      return `${daysAgo} day${daysAgo !== 1 ? 's' : ''} ago`;
+    }
     
       return(
-        <>
-        <SafeAreaView style={{ backgroundColor: '#f8fafc' }}>
-        <Stack.Screen
-        options={{
-          headerStyle: { 
-            backgroundColor: '#f8fafc',
-          },
-          headerTitle: "",
-        }}
-      />
-        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.contentContainer}>
-          <View style={{flex: 1, alignItems: "center"}}>
-            <Text style={{color: "black", fontSize: 36, fontWeight: "bold"}}>$ {btcPrice}</Text>
-          </View>  
-          <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.contentContainer}></ScrollView>        
+      <View style={{backgroundColor: '#f8fafc', height: "100%"}}>
+            <Text style={styles.btcPrice}>$ {btcPrice}</Text>
+            <Text style={styles.mempool}>mempool.space blocks</Text>    
+          <ScrollView showsHorizontalScrollIndicator={false} contentContainerStyle={styles.contentContainer} horizontal={true}>         
             {blocks && blocks.map((block) => {  
               return(
                 <View style={styles.block} key={block.nonce}>
-                  <View style={{flexDirection: "column", alignItems: "center"}}>
-                    <Text style={{marginVertical: 1, fontSize: 24, fontWeight: "bold", color: "white"}}>{block.height}</Text>
-                  </View>
-                  <Text style={{color: "white"}}>{block.size / 1000000} MB</Text>
-                  <Text style={{color: "white"}}>{block.tx_count} transactions</Text>
-                  <Text style={{color: "white"}}>{block.extras.totalFees} total fees</Text>
+                  <Text style={styles.blockHeight}>{block.height}</Text>
+                  <Text style={styles.blocktext}>{block.size / 1000000} MB</Text>
+                  <Text style={styles.blocktext}>{block.tx_count} transactions</Text>
+                  <Text style={styles.blocktext}>{formatTimestamp(block.timestamp)}</Text>
                 </View>  
-
               )
             })}
           </ScrollView>
-          </SafeAreaView>
-          </>
+        </View>
       )
 }
 
 const styles = StyleSheet.create({
   contentContainer: {
-    alignItems: "center",
+    backgroundColor: '#f8fafc',
+  },
+  btcPrice: {
+    color: "#F2A900", 
+    fontSize: 48, 
+    fontWeight: "bold", 
+    textAlign: "center"
+  },
+  mempool: {
+    color: "black", 
+    fontSize: 48, 
+    fontWeight: "bold", 
+    textAlign: "center"
   },
   block: {
     flex: 1,
     alignItems: "center",
     justifyContent: "space-between",
     marginVertical: 10,
-    marginHorizontal: 'auto',
-    width: 160,
+    marginHorizontal: 10,
+    width: 180,
     height: 160,
     padding: 10,
     fontFamily: 'System',
@@ -80,4 +93,13 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: "#6A5ACD",
   },
+  blocktext: {
+    color: "white"
+  },
+  blockHeight: {
+    marginVertical: 1, 
+    fontSize: 24, 
+    fontWeight: "bold", 
+    color: "white"
+  }
 });
