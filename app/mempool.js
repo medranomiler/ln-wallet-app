@@ -1,12 +1,16 @@
-import { View, Text, StyleSheet, ScrollView } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, SafeAreaView } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { getBitcoinPrice } from "../hooks/getBitcoinPrice"
 import { getBlocks } from "../hooks/getBlocks"
+import { Feather } from '@expo/vector-icons'
+import { useRouter, Stack } from "expo-router"
 
 export default function Mempool() {
 
     const [ btcPrice, setBtcPrice ] = useState('')
     const [ blocks, setBlocks ] = useState([])
+    const [ blocksToHalving, setBlocksToHalving ] = useState('')
+    const router = useRouter()
 
     useEffect(() => {
       const useGetBitcoinPrice = async () => {
@@ -20,6 +24,8 @@ export default function Mempool() {
     useEffect(() => {
       const useGetBlocks = async () => {
         const sortedBlocks = await getBlocks()
+        const currentBlock = sortedBlocks[0].height
+        setBlocksToHalving(840000 - currentBlock)
         setBlocks(sortedBlocks)
       }
       useGetBlocks()
@@ -43,9 +49,35 @@ export default function Mempool() {
     }
     
       return(
-      <View style={{backgroundColor: '#f8fafc', height: "100%"}}>
+        <>
+                          <Stack.Screen
+        options={{
+          // https://reactnavigation.org/docs/headers#setting-the-header-title
+          title: "My home",
+          // https://reactnavigation.org/docs/headers#adjusting-header-styles
+          headerStyle: { backgroundColor: "#f8fafc" },
+          headerTintColor: "black",
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+          // https://reactnavigation.org/docs/headers#replacing-the-title-with-a-custom-component
+          headerTitle: "",
+          headerLeft: () => <Feather name="home" size={24} color="black" onPress={() => {
+            router.push("/")}}/>,
+          headerRight: () => <Feather name="settings" size={24} color="black" onPress={() => {
+            router.push("/settingsModal")}}/>,
+        }}
+      />
+      <SafeAreaView style={{
+        flex: 1,
+        justifyContent: 'start',
+        alignItems: 'center',
+        backgroundColor: '#f8fafc'
+      }}>
+
             <Text style={styles.btcPrice}>$ {btcPrice}</Text>
-            <Text style={styles.mempool}>mempool.space blocks</Text>    
+            <Text style={styles.mempool}>mempool.space blocks</Text>
+            <View style={{height: 300, flexDirection: 'column'}}>
           <ScrollView showsHorizontalScrollIndicator={false} contentContainerStyle={styles.contentContainer} horizontal={true}>         
             {blocks && blocks.map((block) => {  
               return(
@@ -58,13 +90,17 @@ export default function Mempool() {
               )
             })}
           </ScrollView>
-        </View>
+            <Text style={styles.mempool}>Blocks to Halving</Text>
+            <Text style={styles.btcPrice}>{blocksToHalving}</Text>  
+          </View>
+        </SafeAreaView></>
       )
 }
 
 const styles = StyleSheet.create({
   contentContainer: {
     backgroundColor: '#f8fafc',
+    borderBottomColor: "black"
   },
   btcPrice: {
     color: "#F2A900", 
