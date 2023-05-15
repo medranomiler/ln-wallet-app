@@ -18,12 +18,12 @@ export const payInvoice = async (invoice) => {
         },
       }
     );
-    const data = response.data;
+    const data = await response.data;
     console.log(data);
     const message = 'Payment Sent!';
     return message;
   } catch (error) {
-    const message = 'Error sending payment';
+    const message = 'Error Sending Payment';
     return message;
   }
 };

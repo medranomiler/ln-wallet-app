@@ -22,6 +22,7 @@ export default function Modal() {
     const onPressPayInvoice = async () => {
       setLoading(true)
       const message = await payInvoice(invoice)
+      setMessage("Sending Payment")
       setTimeout(() => {
       setMessage(message)
       setLoading(false)
@@ -29,9 +30,11 @@ export default function Modal() {
     };
 
     const readInvoice = async () => {
-      console.log(invoice)
       const decodedInvoice = await decodeInvoice(invoice)
+      setMessage("Decoding Invoice...")
+      setTimeout(() => {
       setMessage(`${decodedInvoice.num_satoshis} Sats for ${decodedInvoice.description}`)
+    }, 1000)  
     }
 
     return (

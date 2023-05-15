@@ -10,7 +10,7 @@ export const getBalance = async () => {
         'Content-Type': 'application/json'
       }
     });
-    const data = res.data;
+    const data = await res.data;
     const walletName = data.name;
     const walletBalance = Math.floor(data.balance * 0.001);
     console.log('received wallet details');
