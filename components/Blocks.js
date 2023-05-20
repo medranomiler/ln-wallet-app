@@ -35,7 +35,7 @@ const Blocks = () => {
 
     return (
         <>
-        <View style={{height: 260, padding: 4, backgroundColor: "#e2e8f0", width: 350, marginVertical: 8, borderRadius: 10}}>
+        <View style={{height: 260, padding: 10, backgroundColor: "#e2e8f0", marginVertical: 8, borderRadius: 10}}>
         <Text style={styles.mempool}>Recent Blocks</Text>
         <View style={{alignSelf: "center", width: "94%"}}>
         <ScrollView showsHorizontalScrollIndicator={false} contentContainerStyle={styles.contentContainer} horizontal={true}>
@@ -63,7 +63,6 @@ export default Blocks
 
 const styles = StyleSheet.create({
     contentContainer: {
-        // height: 200,
         backgroundColor: '#e2e8f0',
         borderBottomColor: "black",
     },
@@ -89,7 +88,8 @@ const styles = StyleSheet.create({
         backgroundColor: "#6A5ACD",
     },
     blocktext: {
-        color: "white"
+        color: "white",
+        // fontWeight: "bold",
     },
     blocktextSize: {
         color: "white",
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     },
     blockHeight: {
         marginVertical: 1,
-        fontSize: 24,
+        fontSize: 26,
         fontWeight: "bold",
         color: "white"
     },

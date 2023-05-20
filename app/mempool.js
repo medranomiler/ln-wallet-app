@@ -1,7 +1,7 @@
 import { StyleSheet, SafeAreaView, View, Text } from 'react-native'
 import React from 'react'
 import { Feather } from '@expo/vector-icons'
-import { Stack } from "expo-router"
+import { Stack, useRouter } from "expo-router"
 import { Image } from 'expo-image'
 
 import Blocks from "../components/Blocks"
@@ -11,6 +11,7 @@ import MempoolLogo from "../components/mempool-space-logo-bigger.png"
 
 
 export default function Mempool() {
+  const router = useRouter()
 
       return(
         <>
@@ -34,8 +35,8 @@ export default function Mempool() {
             <BitcoinPrice />
             <Blocks />          
             <MempoolDataTable />
-            <View style={{backgroundColor: "#e2e8f0", padding: 10, marginVertical: 8, borderRadius: 10}}>
-              <Text style={{fontSize: 24, fontWeight: "bold", textAlign: "center"}}>Data provided by:  </Text>      
+            <View style={styles.logoContainer}>
+              <Text style={styles.logoText}>Data provided by:  </Text>      
             <Image 
               style={styles.logo} 
               source={MempoolLogo}
@@ -56,7 +57,18 @@ const styles = StyleSheet.create({
     justifyContent: 'start',
     alignItems: 'center',
     backgroundColor: '#f8fafc',
-    
+    padding: 12,
+  },
+  logoContainer:{
+    backgroundColor: "#e2e8f0", 
+    padding: 10, 
+    marginVertical: 8, 
+    borderRadius: 10
+  },
+  logoText:{
+    fontSize: 24, 
+    fontWeight: "bold", 
+    textAlign: "center"
   },
   logo:{
     height: 100,

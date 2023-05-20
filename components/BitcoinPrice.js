@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, SafeAreaView } from 'react-native'
+import { View, Text } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { getBitcoinPrice } from "../hooks/getBitcoinPrice"
 
@@ -22,7 +22,7 @@ const BitcoinPrice = () => {
         fontWeight: "bold", 
         textAlign: "center"
     }}>
-        $ {btcPrice}
+        $ {btcPrice.toLocaleString("en-US")}
         </Text>     
     </View>
   )
