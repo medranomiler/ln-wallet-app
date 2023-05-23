@@ -54,7 +54,6 @@ const styles = StyleSheet.create({
       backgroundColor: '#e2e8f0',
       padding: 10,
       borderRadius: 10,
-    //   top: -200
     },
     dataHeading: {
       color: "black", 
