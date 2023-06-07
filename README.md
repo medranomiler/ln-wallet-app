@@ -16,7 +16,7 @@ This is not intended to be used with large amounts of sats. You will need to add
 ![IMG_9179](https://github.com/medranomiler/ln-wallet-app/assets/67513942/c0689098-c005-45d4-8f76-b6227080c571)
 ![IMG_9180](https://github.com/medranomiler/ln-wallet-app/assets/67513942/b22d946b-8b98-476c-8b24-e462ad643b92)
 ![IMG_9189](https://github.com/medranomiler/ln-wallet-app/assets/67513942/5b9bbd54-766a-4d91-b91c-6067d5d573aa)
-![IMG_9190](https://github.com/medranomiler/ln-wallet-app/assets/67513942/c65f911a-4946-495f-9f5a-f9fdcf03016f)
+![IMG_9266](https://github.com/medranomiler/ln-wallet-app/assets/67513942/039f0ca2-fa3e-486c-bf09-60efb55c1e6b)
 ![IMG_9183](https://github.com/medranomiler/ln-wallet-app/assets/67513942/b5c40ca9-cce0-4fdb-8185-a640792e1b35)
 ![IMG_9184](https://github.com/medranomiler/ln-wallet-app/assets/67513942/e5a9cdc1-1ad4-4d9d-8a4f-c645ab29106b)
 ![IMG_9185](https://github.com/medranomiler/ln-wallet-app/assets/67513942/fbea061d-b952-4138-9a1c-409a5f42860c)
